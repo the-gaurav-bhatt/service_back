@@ -1,7 +1,15 @@
-import mongoose from "mongoose";
+import mongoose, { InferSchemaType } from "mongoose";
+// export interface IChapter extends Document {
+//   chapterName: String;
+//   chapterTitle: String;
+//   pdfProfileTitles?: String[];
+//   videoTitles: String[];
+//   pdfLinks?: String[];
+//   course: mongoose.Schema.Types.ObjectId;
+// }
 const chapterSchema = new mongoose.Schema({
   chapterName: String,
-  chapterTitle: String,
+  chapterTitle: Number,
   pdfProfileTitles: [String],
   videoTitles: [String],
   pdfLinks: [String],
@@ -11,4 +19,5 @@ const chapterSchema = new mongoose.Schema({
     required: true,
   },
 });
-export default mongoose.model("Chapter", chapterSchema);
+export type IChapter = InferSchemaType<typeof chapterSchema>;
+export default mongoose.model<IChapter>("Chapter", chapterSchema);

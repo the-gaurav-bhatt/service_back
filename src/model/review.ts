@@ -1,6 +1,12 @@
-import mongoose from "mongoose";
-
-const reviewSchema = new mongoose.Schema({
+import mongoose, { Model, Schema } from "mongoose";
+// this is old method.use inferSchemaType can be used instead
+export interface IReview {
+  text: String;
+  rating: Number;
+  user: mongoose.Schema.Types.ObjectId;
+  course: mongoose.Schema.Types.ObjectId;
+}
+const reviewSchema: Schema<IReview> = new mongoose.Schema<IReview>({
   text: { type: String, required: true },
   rating: {
     type: Number,
@@ -19,4 +25,4 @@ const reviewSchema = new mongoose.Schema({
     required: true,
   },
 });
-export default mongoose.model("Review", reviewSchema);
+export default mongoose.model<IReview>("Review", reviewSchema);

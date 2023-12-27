@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Document, InferSchemaType, Model } from "mongoose";
 const objId = mongoose.Schema.Types.ObjectId;
 
 const courseSchema = new mongoose.Schema({
@@ -51,4 +51,9 @@ const courseSchema = new mongoose.Schema({
   isFree: Boolean,
 });
 
-export default mongoose.model("Course", courseSchema);
+type Icourse = InferSchemaType<typeof courseSchema>;
+
+export const Course: Model<Icourse> = mongoose.model<Icourse>(
+  "Course",
+  courseSchema
+);
