@@ -23,7 +23,15 @@ userRouter.get(
     const user = (req.session as any).passport.user;
     console.log(user);
     generateToken(res, user.id);
-    res.redirect("http://localhost:3000/");
+    /*   
+      user.img
+      user.name
+
+
+    */
+    res.redirect(
+      `http://localhost:3000/login?name=${user.name}&img=${user.img}&_id=${user.id}`
+    );
   }
 );
 export default userRouter;

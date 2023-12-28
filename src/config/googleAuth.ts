@@ -1,14 +1,9 @@
 import passport from "passport";
-import { Request } from "express";
 import google from "passport-google-oauth20";
 import Usermodel from "../model/user.ts";
-
 import dotenv from "dotenv";
 dotenv.config();
 
-interface IDInterface extends Request {
-  id: String;
-}
 export default async function setUpAuth() {
   const googleStragy = google.Strategy;
 
@@ -30,7 +25,6 @@ export default async function setUpAuth() {
         try {
           console.log(profile);
           const useEmail: String = profile._json.email;
-          console.log(useEmail);
           const user = await Usermodel.findOne({
             email: profile._json.email,
           });
@@ -41,17 +35,22 @@ export default async function setUpAuth() {
               email: useEmail,
               password: Date.now().toString(),
               googleId: profile.id,
+              profilePicture: profile.photos[0].value,
             });
             console.log(res);
           }
+
+          const bro = {
+            id: user._id.toString(),
+            name: profile.displayName,
+            img: profile.photos[0].value,
+          };
+
+          // Now token and user are ready store them in DB
+          done(null, bro);
         } catch (err) {
           console.log(err);
         }
-
-        const bro = { id: profile.id };
-
-        // Now token and user are ready store them in DB
-        done(null, bro);
       }
     )
   );

@@ -16,8 +16,17 @@ export const registerUser = async (req: Request, res: Response) => {
     } else {
       const user = await userModel.create({ name, email, password });
       generateToken(res, user._id);
+      const userProfile = {
+        name: user.name,
+        _id: user._id,
+        img: user.profilePicture,
+      };
       console.log(user);
-      return res.status(201).json({ message: "User Successfully Created" });
+      return res.status(201).json({
+        message: "User Successfully Created",
+        success: true,
+        userProfile,
+      });
     }
   } catch (err) {
     console.log(err);
@@ -28,16 +37,24 @@ export const registerUser = async (req: Request, res: Response) => {
 };
 
 export const authenticateUser = async (req: Request, res: Response) => {
+  console.log("Login ROute hit");
   const { email, password } = req.body;
   const user = await userModel.findOne({ email: email });
   if (user && (await user.comparePassword(password))) {
     generateToken(res, user._id);
 
-    return res
-      .status(200)
-      .json({ message: "Authentication Success", success: true });
+    const _id = user?._id.toString();
+    const userProfile = { name: user.name, _id, img: user.profilePicture };
+    console.log(userProfile);
+    return res.status(200).json({
+      message: "Authentication Success",
+      success: true,
+      userProfile,
+    });
   }
-  return res.status(401).json({ message: "Invalid Email/Password" });
+  return res.status(401).json({
+    message: "Invalid Email/Password",
+  });
 };
 
 const logOut = async (req: Request, res: Response) => {};
