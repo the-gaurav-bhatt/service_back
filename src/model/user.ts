@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import { NextFunction } from "express";
 export interface IUser {
   _id: mongoose.Schema.Types.ObjectId;
+  googleId?: string;
   name: string;
   email: string;
   password: string;
@@ -34,6 +35,7 @@ const userSchema = new mongoose.Schema<IUser>({
     type: String,
     default: "student",
   },
+  googleId: String,
   contact: String,
   courses: [
     {
