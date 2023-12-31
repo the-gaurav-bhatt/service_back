@@ -9,6 +9,7 @@ export interface IUser {
   password: string;
   role?: string;
   contact?: string;
+  address?: string;
   courses?: mongoose.Schema.Types.ObjectId[];
   reviews?: mongoose.Schema.Types.ObjectId[];
   cart?: mongoose.Schema.Types.ObjectId[];
@@ -31,6 +32,7 @@ const userSchema = new mongoose.Schema<IUser>({
     required: true,
     type: String,
   },
+  address: String,
   role: {
     type: String,
     default: "student",

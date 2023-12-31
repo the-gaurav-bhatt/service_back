@@ -9,7 +9,7 @@ import mongoose, { InferSchemaType } from "mongoose";
 // }
 const chapterSchema = new mongoose.Schema({
   chapterName: String,
-  chapterTitle: Number,
+  chapterTitle: String,
   pdfProfileTitles: [String],
   videoTitles: [String],
   pdfLinks: [String],

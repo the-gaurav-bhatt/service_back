@@ -4,6 +4,8 @@
   "description": "",
   "main": "./src/server.ts",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.484.0",
+    "@aws-sdk/s3-request-presigner": "^3.484.0",
     "@types/bcrypt": "^5.0.2",
     "@types/compression": "^1.7.5",
     "@types/cookie-parser": "^1.4.6",

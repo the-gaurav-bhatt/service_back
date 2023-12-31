@@ -1,10 +1,18 @@
 import express, { Request, Response } from "express";
 import passport from "passport";
-import { registerUser, authenticateUser } from "./users.controller.ts";
+import {
+  registerUser,
+  authenticateUser,
+  giveProfileInfo,
+  updateProfileInfo,
+} from "./users.controller.ts";
+import verifyAuthenticaton from "../middlewares/authMiddleware.ts";
 import setUpAuth from "../config/googleAuth.ts";
 import { generateToken } from "../utils/auth.ts";
 const userRouter = express.Router();
 setUpAuth();
+userRouter.get("/user/profile", verifyAuthenticaton, giveProfileInfo);
+userRouter.post("/user/updateUser", verifyAuthenticaton, updateProfileInfo);
 userRouter.post("/signup", registerUser);
 userRouter.post("/login", authenticateUser);
 userRouter.get(

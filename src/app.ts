@@ -4,8 +4,8 @@ import userRouter from "./routes/users.router.ts";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import verifyAuthenticaton from "./middlewares/authMiddleware.ts";
-import { generateToken } from "utils/auth.ts";
 import passport from "passport";
+import courseRouter from "./routes/courses.routes.ts";
 const app = express();
 
 app.use(
@@ -31,7 +31,8 @@ app.use(
   })
 );
 app.use(passport.session());
-app.use("/v1", userRouter);
+app.use("/api/v1", userRouter);
+app.use("/api/v1", courseRouter);
 
 app.use("/", (req, res) => {
   // console.log(user);

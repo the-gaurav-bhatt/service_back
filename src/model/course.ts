@@ -3,7 +3,7 @@ const objId = mongoose.Schema.Types.ObjectId;
 
 const courseSchema = new mongoose.Schema({
   title: { type: String, required: true },
-  subtile: {
+  subtitle: {
     type: String,
     required: true,
   },
@@ -25,6 +25,7 @@ const courseSchema = new mongoose.Schema({
   tutor: {
     type: objId,
     ref: "Teacher",
+    required: true,
   },
   category: String,
   createdAt: { type: Date, default: Date.now() },
@@ -51,7 +52,7 @@ const courseSchema = new mongoose.Schema({
   isFree: Boolean,
 });
 
-type Icourse = InferSchemaType<typeof courseSchema>;
+export type Icourse = InferSchemaType<typeof courseSchema>;
 
 export const Course: Model<Icourse> = mongoose.model<Icourse>(
   "Course",
