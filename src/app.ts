@@ -6,6 +6,7 @@ import cors from "cors";
 import verifyAuthenticaton from "./middlewares/authMiddleware.ts";
 import passport from "passport";
 import courseRouter from "./routes/courses.routes.ts";
+import { handleErrors } from "./middlewares/errorMiddleware.ts";
 const app = express();
 
 app.use(
@@ -16,6 +17,7 @@ app.use(
       "http://localhost:3000",
       "http://localhost:3001",
       "https://accounts.google.com",
+      "https://a-pathshala-service-1.vercel.app",
     ],
   })
 );
@@ -33,7 +35,7 @@ app.use(
 app.use(passport.session());
 app.use("/api/v1", userRouter);
 app.use("/api/v1", courseRouter);
-
+app.use("/api/v1", handleErrors);
 app.use("/", (req, res) => {
   // console.log(user);
   res.status(200).send("<h1>You hit our base url </h1>");

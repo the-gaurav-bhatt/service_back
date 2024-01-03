@@ -1,10 +1,9 @@
 import { Course, Icourse } from "../model/course";
 import { getObjectUrl, putObjectToBucket } from "../config/aws";
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import { JwtPayload } from "jsonwebtoken";
 import verifyAuthentication from "../middlewares/authMiddleware";
 import Chapter from "../model/chapter";
-import mongoose from "mongoose";
 import user from "../model/user";
 const courseRouter = express.Router();
 
@@ -90,6 +89,7 @@ courseRouter.post(
         price: data.price,
         thumbNail: data.thumbNail,
         requirements: data.requirements,
+        discount: data.discount,
         subtitle: data.subtitle,
         language: data.language,
         description: data.description,
@@ -161,15 +161,12 @@ courseRouter.get(
       const course = await Course.find({ tutor: req.user.id });
       return res.status(200).json(course);
     } catch (err) {
-      console.log(err);
       return res.status(404).json({ success: false });
     }
   }
 );
 
 courseRouter.get("/popularCourses", async (req: Request, res: Response) => {
-  // console.log("Get Courses Url Hit" + req.user.id);
-
   try {
     const course = await Course.find({}).sort("-price").limit(10).exec();
     return res.status(200).json(course);
@@ -180,31 +177,40 @@ courseRouter.get("/popularCourses", async (req: Request, res: Response) => {
 });
 courseRouter.get(
   "/course",
-  async (req: AuthenticatedRequest, res: Response) => {
+  async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     console.log("Inside Getting single course");
     const _id = req.query.courseId;
+    if (!_id) {
+      return next(new Error("No Id found for the url"));
+    }
     console.log(_id);
     try {
       const course = await Course.findOne({ _id });
       console.log(course);
       return res.status(200).json(course);
     } catch (err) {
-      return res
-        .status(402)
-        .json({ messages: "Couldnt find any course with given id " });
+      next(err);
     }
   }
 );
 
-courseRouter.get("/courseDetail", async (req: Request, res: Response) => {
-  const _id = req.query._id;
-  const course = await Course.findById(_id)
-    .populate("content")
-    .populate({ path: "tutor", select: "name" })
-    .exec();
-  console.log(course);
-  return res.status(200).json(course);
-});
+courseRouter.get(
+  "/courseDetail",
+  async (req: Request, res: Response, next: NextFunction) => {
+    console.log("Course Detail page");
+    const _id = req.query._id;
+    try {
+      const course = await Course.findById(_id)
+        .populate("content")
+        .populate({ path: "tutor", select: "name" })
+        .exec();
+      console.log(course);
+      return res.status(200).json(course);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
 
 courseRouter.get("/searchBar", async (req: Request, res: Response) => {
   const str = req.query.query;
