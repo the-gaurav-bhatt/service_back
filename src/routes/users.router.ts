@@ -5,6 +5,7 @@ import {
   authenticateUser,
   giveProfileInfo,
   updateProfileInfo,
+  logoutUser,
 } from "./users.controller.ts";
 import verifyAuthenticaton from "../middlewares/authMiddleware.ts";
 import setUpAuth from "../config/googleAuth.ts";
@@ -15,6 +16,7 @@ userRouter.get("/user/profile", verifyAuthenticaton, giveProfileInfo);
 userRouter.post("/user/updateUser", verifyAuthenticaton, updateProfileInfo);
 userRouter.post("/signup", registerUser);
 userRouter.post("/login", authenticateUser);
+userRouter.get("/logout", logoutUser);
 userRouter.get(
   "/auth/google",
   passport.authenticate("google", { scope: ["profile", "email"] })

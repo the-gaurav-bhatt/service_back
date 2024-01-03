@@ -24,6 +24,7 @@ export default async function setUpAuth() {
       ) {
         try {
           console.log(profile);
+          let bro;
           const useEmail: String = profile._json.email;
           const user = await Usermodel.findOne({
             email: profile._json.email,
@@ -38,13 +39,20 @@ export default async function setUpAuth() {
               profilePicture: profile.photos[0].value,
             });
             console.log(res);
+            bro = {
+              id: res._id.toString(),
+              name: res.name,
+              img: res.profilePicture,
+              role: res.role,
+            };
+          } else {
+            bro = {
+              id: user._id.toString(),
+              name: profile.displayName,
+              img: profile.photos[0].value,
+              role: user.role,
+            };
           }
-
-          const bro = {
-            id: user._id.toString(),
-            name: profile.displayName,
-            img: profile.photos[0].value,
-          };
 
           // Now token and user are ready store them in DB
           done(null, bro);

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import userModel, { IUser } from "../model/user";
 import { JwtPayload } from "jsonwebtoken";
-import { generateToken } from "../utils/auth";
+import { clearToken, generateToken } from "../utils/auth";
 interface AuthenticatedRequest extends Request {
   user?: JwtPayload;
 }
@@ -10,6 +10,14 @@ interface RegisterRequestBody {
   email: string;
   password: string;
 }
+
+export const logoutUser = async (req: Request, res: Response) => {
+  console.log("logout ROute Hit");
+  res.clearCookie("jwt");
+  // req.session.destroy;
+  clearToken(res);
+  return res.status(200).json({ message: "LogOut Success", success: true });
+};
 
 export const registerUser = async (req: Request, res: Response) => {
   console.log("Signup URL hit success");
@@ -62,7 +70,10 @@ export const authenticateUser = async (req: Request, res: Response) => {
   console.log("Login Route hit");
   const { email, password }: AuthenticateRequestBody = req.body;
   const user: IUser = await userModel.findOne({ email: email });
-  if (user && (await user.comparePassword(password))) {
+  //skipping decryption of password for the dummy fake user
+
+  // if (user && (await user.comparePassword(password))) {
+  if (user && user.password == password) {
     generateToken(res, user._id);
 
     const _id: string = user?._id.toString();
@@ -89,9 +100,10 @@ export const giveProfileInfo = async (
 ) => {
   const user = await userModel.findById(
     { _id: req.user.id },
-    "name email role contact address  "
+    "name email role contact profilePicture address  "
   );
-  console.log(user);
+
+  console.log("the user is " + user);
   console.log("Profile ENDPOINT hit");
   console.log(req.user);
   return res.status(200).json({ success: true, profileInfo: user });
@@ -118,4 +130,3 @@ export const updateProfileInfo = async (req: Request, res: Response) => {
     });
   }
 };
-const logOut = async (req: Request, res: Response) => {};
