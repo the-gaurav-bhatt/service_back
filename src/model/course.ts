@@ -28,7 +28,7 @@ const courseSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  category: String,
+  category: { type: String, required: true },
   createdAt: { type: Date, default: Date.now() },
   updatedAt: Date,
   thumbNail: String,

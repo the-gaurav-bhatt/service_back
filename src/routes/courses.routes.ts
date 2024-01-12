@@ -231,4 +231,13 @@ courseRouter.get("/searchBar", async (req: Request, res: Response) => {
     return res.status(200).json(courses);
   }
 });
+courseRouter.get(
+  "/getAllCategoriesCourse",
+  async (req: Request, res: Response, next) => {
+    const categories = await Course.distinct("category");
+    const courses = await Course.find({});
+
+    return res.status(200).json({ categories, courses });
+  }
+);
 export default courseRouter;
