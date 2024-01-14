@@ -20,7 +20,7 @@ jobs:
 
   deploy:
     needs: build
-    runs-on: aplus_backend
+    runs-on: self-hosted
     steps:
       - name: Pulling Image from docker Hub
         run: docker pull gauri65/aplus:latest
