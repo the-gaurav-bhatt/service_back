@@ -6,7 +6,7 @@
   "main": "./src/server.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "pm2 start app.js -i max dist/server.js",
+    "start": "pm2 start server.js -i max dist/server.js",
     "build": "tsc",
     "pm2_start": "pm2 start src/server.ts -i max ",
     "dev": "nodemon server.ts --prefix src"
