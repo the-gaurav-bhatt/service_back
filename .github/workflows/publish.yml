@@ -28,8 +28,8 @@ jobs:
       - name: Remove existing Containers
         run: sudo docker ps -a
       - name: Stop existing Containers
-        run: sudo docker stop aplus_container
-      - name: Stop existing containers
+        run: sudo docker stop aplus_container || true
+      - name: Remove existing containers
         run: sudo docker rm -f aplus_container || true
       - name: Run a container
         run: sudo docker run -d --name aplus_container -p 8000:8000 gauri65/aplus
