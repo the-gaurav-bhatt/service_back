@@ -31,7 +31,7 @@ jobs:
         run: sudo docker stop aplus_container || true
       - name: Remove existing containers
         run: sudo docker rm -f aplus_container || true
-      - name: Run a container
+      - name: Run a container HI
         run: sudo docker run -d -p 8000:8000 --name aplus_container gauri65/aplus
       - name: Log the container
         run: sudo docker logs aplus_container
