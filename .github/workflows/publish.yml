@@ -25,6 +25,6 @@ jobs:
       - name: Pulling Image from docker Hub
         run: docker pull gauri65/aplus:latest
       - name: Remove any existing containers
-        run: docker rm -f aplus_container || true
+        run: docker rm -f aplus_container && gauri65/aplus
       - name: Run a container
         run: docker run -d --name aplus_container -p 8000:8000 gauri65/aplus
