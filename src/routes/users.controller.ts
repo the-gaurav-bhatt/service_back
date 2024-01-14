@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import userModel, { IUser } from "../model/user";
+import userModel, { IUser } from "../model/user.js";
 import { JwtPayload } from "jsonwebtoken";
-import { clearToken, generateToken } from "../utils/auth";
+import { clearToken, generateToken } from "../utils/auth.js";
 interface AuthenticatedRequest extends Request {
   user?: JwtPayload;
 }

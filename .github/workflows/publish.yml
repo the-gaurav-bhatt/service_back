@@ -1,0 +1,30 @@
+name: Docker Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ["ubuntu-latest"]
+    steps:
+      - name: Checkout the source
+        uses: actions/checkout@v2
+      - name: Login to Docker Hub
+        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{secrets.DOCKER_PASSWORD}}
+      - name: Building docker image
+        run: docker build . -t gauri65/aplus
+      - name: Push docker image to Hub
+        run: docker push gauri65/aplus:latest
+
+  deploy:
+    needs: build
+    runs-on: aplus_backend
+    steps:
+      - name: Pulling Image from docker Hub
+        run: docker pull gauri65/aplus:latest
+      - name: Remove any existing containers
+        run: docker rm -f aplus_container || true
+      - name: Run a container
+        run: docker run -d --name aplus_container -p 8000:8000 gauri65/aplus

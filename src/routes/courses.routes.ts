@@ -1,10 +1,10 @@
-import { Course, Icourse } from "../model/course";
-import { getObjectUrl, putObjectToBucket } from "../config/aws";
+import { Course, Icourse } from "../model/course.js";
+import { getObjectUrl, putObjectToBucket } from "../config/aws.js";
 import express, { NextFunction, Request, Response } from "express";
 import { JwtPayload } from "jsonwebtoken";
-import verifyAuthentication from "../middlewares/authMiddleware";
-import Chapter from "../model/chapter";
-import user from "../model/user";
+import verifyAuthentication from "../middlewares/authMiddleware.js";
+import Chapter from "../model/chapter.js";
+import user from "../model/user.js";
 const courseRouter = express.Router();
 
 interface AuthenticatedRequest extends Request {

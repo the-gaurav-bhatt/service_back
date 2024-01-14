@@ -1,20 +1,14 @@
-FROM node:20-alpine AS base
-
+FROM node:20-alpine 
 
 WORKDIR /app
 COPY package*.json .
-RUN npm install 
-RUN npm install pm2 -g
-RUN npm install -g ts-node
-
-
+COPY tsconfig.json .
 COPY . .
-
+RUN npm install 
+RUN npm run build
 EXPOSE 8000
 
 ENV PORT=8000
 
-RUN ls -al -R
-
-CMD [ "pm2-runtime","src/server.ts" ]
+CMD [ "npm","start" ]
 

@@ -1,5 +1,5 @@
 import mongoose, { Document, InferSchemaType, Model } from "mongoose";
-import user, { IUser } from "./user";
+import user, { IUser } from "./user.js";
 const objId = mongoose.Schema.Types.ObjectId;
 
 const courseSchema = new mongoose.Schema({

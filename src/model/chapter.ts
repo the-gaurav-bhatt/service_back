@@ -1,6 +1,6 @@
 import { NextFunction } from "express";
 import mongoose, { InferSchemaType } from "mongoose";
-import { Course } from "./course";
+import { Course } from "./course.js";
 // export interface IChapter extends Document {
 //   chapterName: String;
 //   chapterTitle: String;
