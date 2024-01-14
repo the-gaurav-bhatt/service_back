@@ -24,9 +24,8 @@ jobs:
     steps:
       - name: Pulling Image from docker Hub
         run: sudo docker pull gauri65/aplus:latest
-      - name: Remove any existing containers
-        run: sudo docker stop $(docker ps -aq)
-      - name: List existing Containers
+
+      - name: Remove existing Containers
         run: sudo docker ps -a
       - name: Stop existing Containers
         run: sudo docker stop aplus_container
