@@ -29,7 +29,7 @@ jobs:
       - name: List existing Containers
         run: sudo docker ps -a
       - name: Stop existing Containers
-        run: sudo docker stop $(docker ps -aq) || true
+        run: sudo docker stop aplus_container
       - name: Stop existing containers
         run: sudo docker rm -f aplus_container || true
       - name: Run a container
