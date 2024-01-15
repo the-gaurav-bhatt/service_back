@@ -1,5 +1,13 @@
-export const handleErrors = (err, req, res, next) => {
-    console.log(err);
-    return res.status(500).json({ message: err.message });
+export class NotFoundError extends Error {
+    constructor(message) {
+        super(message);
+        this.statusCode = 404;
+        Object.setPrototypeOf(this, NotFoundError.prototype);
+    }
+}
+export const GlobalErrorHandler = (err, req, res, next) => {
+    const statusCode = err instanceof NotFoundError ? err.statusCode : 500;
+    const message = err instanceof NotFoundError ? err.message : "An Unexpected Error Occured";
+    return res.status(statusCode).json({ message: message, success: false });
 };
 //# sourceMappingURL=errorMiddleware.js.map

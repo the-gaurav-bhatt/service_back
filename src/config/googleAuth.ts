@@ -23,13 +23,11 @@ export default async function setUpAuth() {
         done: google.VerifyCallback
       ) {
         try {
-          console.log(profile);
           let bro;
           const useEmail: String = profile._json.email;
           const user = await Usermodel.findOne({
             email: profile._json.email,
           });
-          console.log("the use is " + user);
           if (!user) {
             const res = await Usermodel.create({
               name: profile.displayName,
@@ -38,7 +36,6 @@ export default async function setUpAuth() {
               googleId: profile.id,
               profilePicture: profile.photos[0].value,
             });
-            console.log(res);
             bro = {
               id: res._id.toString(),
               name: res.name,
@@ -56,21 +53,15 @@ export default async function setUpAuth() {
 
           // Now token and user are ready store them in DB
           done(null, bro);
-        } catch (err) {
-          console.log(err);
-        }
+        } catch (err) {}
       }
     )
   );
   passport.serializeUser(function (bro, done) {
-    console.log("Serialize bro");
-    console.log(bro);
     done(null, bro);
   });
 
   passport.deserializeUser(function (obj, done) {
-    console.log("DeSerialize bro");
-    console.log(obj);
     done(null, obj);
   });
 }

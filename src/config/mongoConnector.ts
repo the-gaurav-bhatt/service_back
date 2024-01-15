@@ -3,12 +3,8 @@ import dotenv from "dotenv";
 dotenv.config();
 const MONGO_URI = process.env.MONGO_URI;
 
-mongoose.connection.on("open", () => {
-  console.log("MongoDb is Ready Now...");
-});
-mongoose.connection.on("error", (err) => {
-  console.log(err);
-});
+mongoose.connection.on("open", () => {});
+mongoose.connection.on("error", (err) => {});
 function mongoConnect() {
   mongoose.connect(MONGO_URI!);
 }

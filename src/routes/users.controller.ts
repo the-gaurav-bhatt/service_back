@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import userModel, { IUser } from "../model/user.js";
 import { JwtPayload } from "jsonwebtoken";
 import { clearToken, generateToken } from "../utils/auth.js";
+import { NotFoundError } from "../middlewares/errorMiddleware.js";
+
 interface AuthenticatedRequest extends Request {
   user?: JwtPayload;
 }
@@ -70,10 +72,11 @@ export const authenticateUser = async (req: Request, res: Response) => {
   console.log("Login Route hit");
   const { email, password }: AuthenticateRequestBody = req.body;
   const user: IUser = await userModel.findOne({ email: email });
+  console.log("String password:" + password);
   //skipping decryption of password for the dummy fake user
 
-  // if (user && (await user.comparePassword(password))) {
-  if (user && user.password == password) {
+  if (user && (await user.comparePassword(password))) {
+    // if (user && user.password == password) {
     generateToken(res, user._id);
 
     const _id: string = user?._id.toString();
@@ -129,4 +132,19 @@ export const updateProfileInfo = async (req: Request, res: Response) => {
       success: false,
     });
   }
+};
+
+export const googleRedirect = (req: Request, res: Response) => {
+  const user = (req.session as any).passport.user;
+  console.log(user);
+  generateToken(res, user.id);
+  /*   
+      user.img
+      user.name
+
+
+    */
+  res.redirect(
+    `${process.env.FRONTEND_URL}/login?name=${user.name}&img=${user.img}&_id=${user.id}`
+  );
 };

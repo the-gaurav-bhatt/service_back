@@ -51,9 +51,10 @@ export const authenticateUser = async (req, res) => {
     console.log("Login Route hit");
     const { email, password } = req.body;
     const user = await userModel.findOne({ email: email });
+    console.log("String password:" + password);
     //skipping decryption of password for the dummy fake user
-    // if (user && (await user.comparePassword(password))) {
-    if (user && user.password == password) {
+    if (user && (await user.comparePassword(password))) {
+        // if (user && user.password == password) {
         generateToken(res, user._id);
         const _id = user?._id.toString();
         const userProfile = {
@@ -100,5 +101,17 @@ export const updateProfileInfo = async (req, res) => {
             success: false,
         });
     }
+};
+export const googleRedirect = (req, res) => {
+    const user = req.session.passport.user;
+    console.log(user);
+    generateToken(res, user.id);
+    /*
+        user.img
+        user.name
+  
+  
+      */
+    res.redirect(`${process.env.FRONTEND_URL}/login?name=${user.name}&img=${user.img}&_id=${user.id}`);
 };
 //# sourceMappingURL=users.controller.js.map

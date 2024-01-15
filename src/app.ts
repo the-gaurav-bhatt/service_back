@@ -5,7 +5,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import passport from "passport";
 import courseRouter from "./routes/courses.routes.js";
-import { handleErrors } from "./middlewares/errorMiddleware.js";
+import { GlobalErrorHandler } from "./middlewares/errorMiddleware.js";
 const app = express();
 
 app.use(
@@ -34,9 +34,8 @@ app.use(
 app.use(passport.session());
 app.use("/api/v1", userRouter);
 app.use("/api/v1", courseRouter);
-app.use("/api/v1", handleErrors);
+app.use("/api/v1", GlobalErrorHandler);
 app.use("/", (req, res) => {
-  // console.log(user);
   res.status(200).send("<h1>You hit our base url </h1>");
 });
 export default app;
