@@ -3,16 +3,18 @@ import { getObjectUrl, putObjectToBucket } from "../config/aws.js";
 import Chapter from "../model/chapter.js";
 import user from "../model/user.js";
 import { NotFoundError } from "../middlewares/errorMiddleware.js";
-export const uplaodPhoto = async (req, res) => {
-    const data = req.body;
-    console.log(data);
+export const uploadPhoto = async (req, res, next) => {
     try {
+        const data = req.body;
+        console.log(data);
+        if (!data.fileName || !data.contentType) {
+            throw new NotFoundError("File name or content type is missing");
+        }
         const url = await putObjectToBucket(data.fileName, data.contentType);
         return res.status(200).json({ success: true, url });
     }
     catch (err) {
-        console.log(err);
-        return res.status(404).json({ success: false });
+        next(err); // Passes the error to the GlobalErrorHandler
     }
 };
 export const getPhoto = async (req, res) => {
@@ -28,12 +30,15 @@ export const getPhoto = async (req, res) => {
         return res.status(404).json({ success: false });
     }
 };
-export const createCourse = async (req, res) => {
-    console.log("Hitting Create Course Route");
-    const data = req.body.newCourse;
-    console.log(data);
-    const _id = req.user.id;
+export const createCourse = async (req, res, next) => {
     try {
+        const data = req.body.newCourse;
+        console.log("Hitting Create Course Route");
+        console.log(data);
+        if (!req.user) {
+            throw new NotFoundError("User not authenticated");
+        }
+        const _id = req.user.id;
         const course = new Course({
             title: data.title,
             price: data.price,
@@ -44,19 +49,18 @@ export const createCourse = async (req, res) => {
             description: data.description,
             tutor: _id,
         });
-        const respon = await course.save();
-        console.log("Chekcing for course object after saving it in db");
-        console.log(respon);
+        const response = await course.save();
+        console.log("Checking for course object after saving it in db");
+        console.log(response);
         return res.status(200).json({
             message: "Success Course Upload",
             success: true,
-            _id: respon._id.toString(),
+            _id: response._id.toString(),
         });
     }
     catch (err) {
-        console.log(err);
+        next(err); // Passes the error to the GlobalErrorHandler
     }
-    console.log(data);
 };
 export const editCourse = async (req, res) => {
     console.log("Hitting Update Course Route");
@@ -122,16 +126,19 @@ export const addSections = async (req, res) => {
             .json({ message: "Something went wrong while updating course" });
     }
 };
-export const getUserCourses = async (req, res) => {
-    console.log("Get Courses Url Hit" + req.user.id);
+export const getUserCourses = async (req, res, next) => {
     try {
-        const us = await user.findById(req.user.id).populate("courses").exec();
-        console.log(us);
-        const course = await Course.find({ tutor: req.user.id });
-        return res.status(200).json(course);
+        const userCourses = await user
+            .findById(req.user.id)
+            .populate("courses")
+            .exec();
+        if (!userCourses) {
+            throw new NotFoundError("Courses for the user not found.");
+        }
+        return res.status(200).json(userCourses);
     }
     catch (err) {
-        return res.status(404).json({ success: false });
+        next(err); // Pass any errors to the error handling middleware
     }
 };
 export const getPopularCourses = async (req, res) => {

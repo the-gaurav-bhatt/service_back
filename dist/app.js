@@ -29,7 +29,6 @@ app.use("/api/v1", userRouter);
 app.use("/api/v1", courseRouter);
 app.use("/api/v1", GlobalErrorHandler);
 app.use("/", (req, res) => {
-    // console.log(user);
     res.status(200).send("<h1>You hit our base url </h1>");
 });
 export default app;

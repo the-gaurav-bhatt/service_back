@@ -1,11 +1,11 @@
 import express from "express";
 import verifyAuthentication from "../middlewares/authMiddleware.js";
-import { addSections, createCourse, deleteCourse, editCourse, getAllCategoriesCourse, getCourse, getCourseDetail, getPhoto, getPopularCourses, getUserCourses, showSearches, uplaodPhoto, } from "./courses.controller.js";
+import { addSections, createCourse, deleteCourse, editCourse, getAllCategoriesCourse, getCourse, getCourseDetail, getPhoto, getPopularCourses, getUserCourses, showSearches, uploadPhoto, } from "./courses.controller.js";
 const courseRouter = express.Router();
 // courseRouter.use("/course", (req, res) => {
 //   res.status(200).send("<h1> This is for Course api endpoint</h1>");
 // });
-courseRouter.post("/uploadPhoto", uplaodPhoto);
+courseRouter.post("/uploadPhoto", uploadPhoto);
 courseRouter.post("/getPhoto", getPhoto);
 courseRouter.post("/hi", verifyAuthentication, createCourse);
 courseRouter.post("/editCourse", verifyAuthentication, editCourse);
