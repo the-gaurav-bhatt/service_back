@@ -24,8 +24,8 @@ jobs:
     env:
       MONGO_URI: ${{secrets.MONGO_URI}}
       FRONTEND_URL: ${{secrets.FRONTEND_URL}}
-      PORT= 8000: ${{secrets.PORT}}
-      JWT_SECRET: ${{secrets.PORT}}
+      PORT: 8000
+      JWT_SECRET: ${{secrets.JWT_SECRET}}
       CLIENT_ID_GOOGLE: ${{secrets.CLIENT_ID_GOOGLE}}
       CLIENT_SECRET_GOOGLE: ${{secrets.CLIENT_SECRET_GOOGLE}}
       CALLBACK_URL_FOR_GOOGLE: ${{secrets.CALLBACK_URL_FOR_GOOGLE}}
