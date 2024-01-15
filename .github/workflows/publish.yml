@@ -25,6 +25,11 @@ jobs:
       MONGO_URI: ${{secrets.MONGO_URI}}
       FRONTEND_URL: ${{secrets.FRONTEND_URL}}
       PORT= 8000: ${{secrets.PORT}}
+      JWT_SECRET: ${{secrets.PORT}}
+      CLIENT_ID_GOOGLE: ${{secrets.CLIENT_ID_GOOGLE}}
+      CLIENT_SECRET_GOOGLE: ${{secrets.CLIENT_SECRET_GOOGLE}}
+      CALLBACK_URL_FOR_GOOGLE: ${{secrets.CALLBACK_URL_FOR_GOOGLE}}
+
     steps:
       - name: Pulling Image from docker Hub
         run: sudo docker pull gauri65/aplus:latest
@@ -36,6 +41,6 @@ jobs:
       - name: Remove existing containers
         run: sudo docker rm -f aplus_container || true
       - name: Run a container HI
-        run: sudo docker run -e MONGO_URI=$MONGO_URI -e PORT=8000 -e FRONTEND_URL=$FRONTEND_URL  -d -p 8000:8000 --name aplus_container gauri65/aplus
+        run: sudo docker run -e MONGO_URI=$MONGO_URI -e PORT=8000 -e FRONTEND_URL=$FRONTEND_URL -e CLIENT_ID_GOOGLE=$CLIENT_ID_GOOGLE -e JWT_SECRET=$JWT_SECRET -e CLIENT_SECRET_GOOGLE=$CLIENT_SECRET_GOOGLE -e CALLBACK_URL_FOR_GOOGLE=$CALLBACK_URL_FOR_GOOGLE  -d -p 8000:8000 --name aplus_container gauri65/aplus
       - name: Log the container
         run: sudo docker logs aplus_container
