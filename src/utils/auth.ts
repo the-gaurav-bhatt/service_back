@@ -16,7 +16,9 @@ export const generateToken = (
   res.cookie("jwt", token, {
     httpOnly: true,
     // secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    sameSite: "none",
+    secure: true,
+    domain: ".onrender.com",
     maxAge: 60 * 60 * 1000,
   });
 };
