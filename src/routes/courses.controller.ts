@@ -51,6 +51,7 @@ export const createCourse = async (
     console.log("Hitting Create Course Route");
     console.log(data);
     if (!req.user) {
+      console.log(req.user);
       throw new NotFoundError("User not authenticated");
     }
     const _id = req.user.id;
@@ -59,6 +60,7 @@ export const createCourse = async (
       price: data.price,
       thumbNail: data.thumbNail,
       requirements: data.requirements,
+      category: data.category,
       subtitle: data.subtitle,
       language: data.language,
       description: data.description,
@@ -73,6 +75,8 @@ export const createCourse = async (
       _id: response._id.toString(),
     });
   } catch (err) {
+    console.log(err);
+
     next(err); // Passes the error to the GlobalErrorHandler
   }
 };
@@ -158,7 +162,7 @@ export const getUserCourses = async (
     if (!userCourses) {
       throw new NotFoundError("Courses for the user not found.");
     }
-    return res.status(200).json(userCourses);
+    return res.status(200).json(userCourses.courses);
   } catch (err) {
     next(err); // Pass any errors to the error handling middleware
   }
