@@ -18,7 +18,7 @@ export const generateToken = (
     // secure: process.env.NODE_ENV === "production",
     sameSite: "none",
     secure: true,
-    domain: ".onrender.com",
+    domain: "https://aplus-63s0.onrender.com",
     maxAge: 24 * 60 * 60 * 1000,
   });
 };
